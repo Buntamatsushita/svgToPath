@@ -21,6 +21,8 @@ def extract_path(svg_text):
 
 def generate_xaml(svg_properties, path, xaml_property_mapping):
     xaml_code = '<Style x:Key="" TargetType="Path">\n'
+    if xaml_code in "fill":
+        xaml_code += f'    <Setter Property="Fill" Value="{svg_properties["fill"]}"/>\n'
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none":
             xaml_code += f'    <Setter Property="{xaml_property_mapping[prop_name]}" Value="{prop_value}"/>\n'
