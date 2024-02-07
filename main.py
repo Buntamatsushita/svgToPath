@@ -18,8 +18,8 @@ def extract_path(svg_text):
     fill = fill[:fill.find('"')]
     return path_data, fill
 
-def generate_xaml(svg_properties, path, xaml_property_mapping, fill):
-    xaml_code = '<Style x:Key="" TargetType="Path">\n'
+def generate_xaml(file_name, svg_properties, xaml_property_mapping):
+    xaml_code = f'<Style x:Key="{file_name}" TargetType="Path">\n'
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none":
             xaml_code += f'    <Setter Property="{xaml_property_mapping[prop_name]}" Value="{prop_value}"/>\n'
@@ -30,7 +30,8 @@ def main():
     st.title("SVG to XAML")
     
     input_svg = ""
-    result_xaml = ''
+    result_xaml = ""
+    file_name = ""
 
     xaml_propaty = {"width":"Width","height":"Height","fill":"Fill","stroke":"Stroke","stroke-width":"StrokeThickness","d":"Data","stroke-linecap":"StrokeLineCap","stroke-linejoin":"StrokeLineJoin","stroke-miterlimit":"StrokeMiterLimit","stroke-dasharray":"StrokeDashArray","stroke-dashoffset":"StrokeDashOffset","stroke-opacity":"StrokeOpacity","fill-rule":"FillRule","font-family":"FontFamily","font-size":"FontSize","font-weight":"FontWeight","font-style":"FontStyle","text-anchor":"TextAlignment","text-decoration":"TextDecorations","text-rendering":"TextRenderingHint","text-transform":"TextTransform","letter-spacing":"CharacterSpacing","word-spacing":"WordSpacing","writing-mode":"TextDirection","alignment-baseline":"BaselineAlignment","baseline-shift":"BaselineOffset","dominant-baseline":"BaselineAlignment","glyph-orientation-horizontal":"GlyphOrientation","glyph-orientation-vertical":"GlyphOrientation"}
 
@@ -43,6 +44,8 @@ def main():
         uploaded_file = st.file_uploader("Upload svg file", type=['svg'])
         if uploaded_file is not None:
             input_svg = uploaded_file.read().decode("utf-8")
+            file_name = uploaded_file.name
+            file_name = file_name[:file_name.find(".")]
             st.code(input_svg, "svg")
 
     if input_svg != "":
@@ -56,7 +59,7 @@ def main():
         st.write(svg_properties)
 
         # XAMLコードの生成
-        result_xaml = generate_xaml(svg_properties, path_data, xaml_propaty, fill)
+        result_xaml = generate_xaml(file_name, svg_properties, xaml_propaty)
 
     st.subheader("result(xaml)")
     st.code(result_xaml, "xaml")
