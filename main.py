@@ -10,23 +10,19 @@ def parse_svg_properties(svg_text):
     return svg_properties
 
 def extract_path(svg_text):
-    in_path = False
-    path = ""
-    for char in svg_text[svg_text.find("<path"):]:
-        if char == '"':
-            in_path = not in_path
-        if in_path and char != '"':
-            path += char
-    return path
+    path_data = svg_text[svg_text.find("<path") + 5:svg_text.find("/>")]
+    path_data = path_data[path_data.find("d=") + 3:]
+    path_data = path_data[:path_data.find('"')]
+    fill = svg_text[svg_text.find("<path") + 5:svg_text.find("/>")]
+    fill = fill[fill.find("fill=") + 6:]
+    fill = fill[:fill.find('"')]
+    return path_data, fill
 
-def generate_xaml(svg_properties, path, xaml_property_mapping):
+def generate_xaml(svg_properties, path, xaml_property_mapping, fill):
     xaml_code = '<Style x:Key="" TargetType="Path">\n'
-    if xaml_code in "fill":
-        xaml_code += f'    <Setter Property="Fill" Value="{svg_properties["fill"]}"/>\n'
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none":
             xaml_code += f'    <Setter Property="{xaml_property_mapping[prop_name]}" Value="{prop_value}"/>\n'
-    xaml_code += f'    <Setter Property="Data" Value="{path}"/>\n'
     xaml_code += '</Style>'
     return xaml_code
 
@@ -52,13 +48,15 @@ def main():
     if input_svg != "":
         # SVGの解析
         svg_properties = parse_svg_properties(input_svg)
-        st.write(svg_properties)
 
         # パスの抽出
-        path_data = extract_path(input_svg)
+        path_data, fill = extract_path(input_svg)
+        svg_properties["fill"] = fill
+        svg_properties["d"] = path_data
+        st.write(svg_properties)
 
         # XAMLコードの生成
-        result_xaml = generate_xaml(svg_properties, path_data, xaml_propaty)
+        result_xaml = generate_xaml(svg_properties, path_data, xaml_propaty, fill)
 
     st.subheader("result(xaml)")
     st.code(result_xaml, "xaml")
