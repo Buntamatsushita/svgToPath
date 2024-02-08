@@ -45,7 +45,7 @@ def generate_xaml(file_name, svg_properties, xaml_property_mapping, svg_properti
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none" and prop_name in svg_properties_is_checked:
             if prop_name == "d":
-                for i in range(len(svg_properties["d"])):
+                for i in range(0, len(svg_properties["d"])):
                     xaml_code += f'    <Setter Property="{"Data"}" Value="{svg_properties["d"][i]}"/>\n'
                     if svg_properties["fill"][i] != "none" and "fill" in svg_properties_is_checked:
                         xaml_code += f'    <Setter Property="{"Fill"}" Value="{svg_properties["fill"][i]}"/>\n'
@@ -58,7 +58,7 @@ def generate_xaml(file_name, svg_properties, xaml_property_mapping, svg_properti
 
 def main():
     st.title("SVG to XAML")
-    
+
     input_svg = ""
     result_xaml = ""
     file_name = ""
@@ -68,7 +68,7 @@ def main():
     xaml_propaty = {"width":"Width","height":"Height","fill":"Fill","stroke":"Stroke","stroke-width":"StrokeThickness","d":"Data","stroke-linecap":"StrokeLineCap","stroke-linejoin":"StrokeLineJoin","stroke-miterlimit":"StrokeMiterLimit","stroke-dasharray":"StrokeDashArray","stroke-dashoffset":"StrokeDashOffset","stroke-opacity":"StrokeOpacity","fill-rule":"FillRule","font-family":"FontFamily","font-size":"FontSize","font-weight":"FontWeight","font-style":"FontStyle","text-anchor":"TextAlignment","text-decoration":"TextDecorations","text-rendering":"TextRenderingHint","text-transform":"TextTransform","letter-spacing":"CharacterSpacing","word-spacing":"WordSpacing","writing-mode":"TextDirection","alignment-baseline":"BaselineAlignment","baseline-shift":"BaselineOffset","dominant-baseline":"BaselineAlignment","glyph-orientation-horizontal":"GlyphOrientation","glyph-orientation-vertical":"GlyphOrientation"}
 
     choice = st.radio("Select input type", ("text", "svg file"))
-    
+
     if choice == "text":
         input_svg = st.text_area("Enter svg", "")
     elif choice == "svg file":
@@ -87,7 +87,7 @@ def main():
         path_datas, fills = extract_path(input_svg)
         svg_properties["d"] = path_datas
         svg_properties["fill"] = fills
-        
+
         show_xaml = st.checkbox("xamlの要素を見る", False)
         if show_xaml:
             st.write(svg_properties)
