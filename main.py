@@ -48,7 +48,7 @@ def generate_xaml(file_name, svg_properties, xaml_property_mapping, svg_properti
                 for i in range(len(svg_properties["d"])):
                     xaml_code += f'    <Setter Property="{"Data"}" Value="{svg_properties["d"][i]}"/>\n'
                     if svg_properties["fill"][i] != "none":
-                        xaml_code += f'    <Setter Property="{"Fill"}" Value="{i}"/>\n'
+                        xaml_code += f'    <Setter Property="{"Fill"}" Value="{svg_properties["fill"][i]}"/>\n'
             elif prop_name == "fill":
                 continue
             else:
