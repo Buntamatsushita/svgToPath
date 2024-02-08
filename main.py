@@ -21,7 +21,7 @@ def extract_path(svg_text):
     
     times = svg_text.count("<path")
     
-    while times > 1:
+    while times > 0:
         path_data = svg_text[svg_text.find("<path") + 5:svg_text.find("/>")]
         path_data = path_data[path_data.find("d=") + 3:]
         path_data = path_data[:path_data.find('"')]
@@ -45,6 +45,7 @@ def generate_xaml(file_name, svg_properties, xaml_property_mapping, svg_properti
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none" and prop_name in svg_properties_is_checked:
             if prop_name == "d":
+                print(svg_properties["d"])
                 for i in range(0, len(svg_properties["d"])):
                     xaml_code += f'    <Setter Property="{"Data"}" Value="{svg_properties["d"][i]}"/>\n'
                     if svg_properties["fill"][i] != "none" and "fill" in svg_properties_is_checked:
