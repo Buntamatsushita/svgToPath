@@ -96,9 +96,11 @@ def main():
             if i in svg_properties:
                 del svg_properties[i]
         svg_properties_is_checked = st.multiselect("xamlに変換する要素を選択してください。", list(svg_properties.keys()), list(svg_properties.keys()))
-
-        # XAMLコードの生成
-        result_xaml = generate_xaml(file_name, svg_properties, xaml_propaty, svg_properties_is_checked)
+        change = False
+        if change != st.button("convert"):
+            # XAMLコードの生成
+            change = not change
+            result_xaml = generate_xaml(file_name, svg_properties, xaml_propaty, svg_properties_is_checked)
 
     st.subheader("result(xaml)")
     st.code(result_xaml, "xaml")
