@@ -42,9 +42,9 @@ def generate_xaml(xaml_code, file_name, svg_properties, xaml_property_mapping, s
     xaml_code += f'<Style x:Key="{file_name}" TargetType="Path">\n'
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none" and prop_name in svg_properties_is_checked:
-            if prop_name == "d":
+            if prop_name == "data":
                 data = ""
-                for i in range(0, len(svg_properties["d"])):
+                for i in range(0, len(svg_properties["data"])):
                     if i == 0:
                         data += f'    <Setter Property="{"Data"}" Value="{svg_properties["data"][i]}'
                     else:
