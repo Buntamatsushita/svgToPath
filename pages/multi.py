@@ -39,7 +39,7 @@ def extract_path(svg_text):
     return path_datas, fills
 
 def generate_xaml(xaml_code, file_name, svg_properties, xaml_property_mapping, svg_properties_is_checked):
-    xaml_code = f'<Style x:Key="{file_name}" TargetType="Path">\n'
+    xaml_code += f'<Style x:Key="{file_name}" TargetType="Path">\n'
     for prop_name, prop_value in svg_properties.items():
         if prop_name in xaml_property_mapping and prop_value != "none" and prop_name in svg_properties_is_checked:
             if prop_name == "d":
@@ -96,15 +96,11 @@ def main():
                 svg_properties["data"] = path_datas
                 svg_properties["fill"] = fills
 
-                show_xaml = st.checkbox("xamlの要素を見る", False)
-                if show_xaml:
-                    st.write(svg_properties)
-
                 for i in ignore_properties:
                     if i in svg_properties:
                         del svg_properties[i]
 
-                    result_xaml = generate_xaml(result_xaml, file_name, svg_properties, xaml_propaty, svg_properties_is_checked)
+                result_xaml = generate_xaml(result_xaml, file_name, svg_properties, xaml_propaty, svg_properties_is_checked)
 
     st.subheader("result(xaml)")
     st.code(result_xaml, "xaml")
