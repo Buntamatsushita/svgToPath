@@ -93,7 +93,7 @@ def main():
 
                 # パスの抽出
                 path_datas, fills = extract_path(input_svg)
-                svg_properties["d"] = path_datas
+                svg_properties["data"] = path_datas
                 svg_properties["fill"] = fills
 
                 show_xaml = st.checkbox("xamlの要素を見る", False)
