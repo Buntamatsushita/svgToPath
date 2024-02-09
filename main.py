@@ -1,7 +1,5 @@
 import streamlit as st
 
-import streamlit as st
-
 def parse_svg_properties(svg_text):
     svg_dict = {}
     svg_properties_start = svg_text.find("<svg") + 5
