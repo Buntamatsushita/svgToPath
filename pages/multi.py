@@ -87,7 +87,7 @@ def main():
             change = not change
             for file in files:
                 input_svg = files[file]
-                file_name = file
+                file_name = file.replace(".svg", "")
                 # SVGの解析
                 svg_properties = parse_svg_properties(input_svg)
 
